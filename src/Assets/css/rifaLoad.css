@@ -1,0 +1,66 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Garante 100% da altura inicial */
+}
+
+body {
+  min-height: 100%; /* Permite que cresça conforme o conteúdo */
+  background: linear-gradient(
+    0deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(41, 9, 121, 1) 29%,
+    rgba(98, 138, 255, 1) 100%
+  );
+  background-attachment: fixed; /* Corrige o fundo para acompanhar o scroll */
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Estiliza os botões da rifa */
+.numero {
+  width: 60px; /* Largura fixa */
+  height: 60px; /* Altura fixa */
+  font-size: 18px; /* Tamanho do texto */
+  font-weight: bold; /* Deixa o número em negrito */
+  display: flex; /* Usa flexbox para centralizar o conteúdo */
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+  border-radius: 5px; /* Bordas arredondadas */
+  margin: 5px; /* Espaçamento entre os botões */
+}
+
+/* Estilo adicional para os botões reservados */
+.numero.btn-danger {
+  background-color: #dc3545; /* Vermelho */
+  color: white;
+  cursor: not-allowed; /* Cursor desabilitado */
+}
+
+/* Estilo adicional para os botões disponíveis */
+.numero.btn-success {
+  background-color: #28a745; /* Verde */
+  color: white;
+}
+
+/* Botão selecionado */
+.numero.selecionado {
+  background-color: #0d6efd; /* Azul */
+  color: white;
+}
+
+
+#modalSelecao {
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+}
+.draggable {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050; /* Para garantir que esteja acima de outros elementos */
+}
+
