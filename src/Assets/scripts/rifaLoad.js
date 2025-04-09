@@ -76,21 +76,20 @@ function toggleNumero(numero, botao) {
     selecionados.push(numero);
   }
 
+  // Atualiza os números na modal, sem fechá-la
   atualizarModal();
 }
 
 function atualizarModal() {
-  const modal = document.getElementById("modalSelecao");
   const numerosSelecionadosDiv = document.getElementById("numerosSelecionados");
 
   // Atualiza os números selecionados na modal
   numerosSelecionadosDiv.textContent = selecionados.join(", ");
 
-  // Exibe a modal se houver números selecionados
+  // Garante que a modal permaneça visível enquanto há números selecionados
   if (selecionados.length > 0) {
+    const modal = document.getElementById("modalSelecao");
     modal.style.display = "block";
-  } else {
-    modal.style.display = "none";
   }
 }
 
@@ -105,17 +104,18 @@ function fecharModal() {
 
   // Deseleciona todos os números ao fechar a modal
   selecionados.forEach((numero) => {
-    const botao = document.querySelector(`button.numero:contains('${numero}')`);
-    if (botao) {
-      botao.classList.remove("btn-warning");
-      botao.classList.add("btn-success");
-    }
+    const botoes = document.querySelectorAll("button.numero");
+    botoes.forEach((botao) => {
+      if (botao.textContent === numero.toString()) {
+        botao.classList.remove("btn-warning");
+        botao.classList.add("btn-success");
+      }
+    });
   });
 
   selecionados = [];
   atualizarModal();
 }
-
 async function confirmarReserva() {
   if (selecionados.length === 0) {
     alert("Nenhum número selecionado!");
@@ -128,7 +128,7 @@ async function confirmarReserva() {
     return;
   }
 
-  const url = `https://script.google.com/macros/s/AKfycbx-your-deployment-id/exec`;
+  const url = `https://script.google.com/macros/s/AKfycbzPjWTtweDQgRvwkzcy18v5afuq845-87SkgOJbRrxj_J-ZE9HNejZUUkzwP_v3zdH_IA/exec`;
 
   const payload = {
     action: "reservarNumeros",
@@ -138,19 +138,16 @@ async function confirmarReserva() {
   };
 
   try {
-    const response = await fetch(url, {
+    await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      mode: "no-cors", // Desativa a política de CORS
       body: JSON.stringify(payload),
     });
 
-    const data = await response.json();
-    console.log("Resposta da reserva:", data);
-    alert(data.mensagem);
-
-    // Recarrega os dados da rifa para atualizar o status dos números
+    alert("Reserva enviada com sucesso!");
     carregarRifa();
     fecharModal();
   } catch (error) {
@@ -159,73 +156,78 @@ async function confirmarReserva() {
   }
 }
 
-
 // Função para tornar a modal arrastável
 function tornarModalArrastavel() {
-    const modalHeader = document.getElementById("modalHeader");
-    const modal = document.getElementById("modalSelecao");
-  
-    let isDragging = false;
-    let startX, startY, initialX, initialY;
-  
-    const iniciarArraste = (e) => {
-      isDragging = true;
-  
-      // Determina se é um evento de toque ou clique
-      const evento = e.type.startsWith("touch") ? e.touches[0] : e;
-  
-      startX = evento.clientX;
-      startY = evento.clientY;
-  
-      const rect = modal.getBoundingClientRect();
-      initialX = rect.left;
-      initialY = rect.top;
-  
-      // Adiciona os listeners para os movimentos e fim do arraste
-      document.addEventListener("mousemove", moverModal);
-      document.addEventListener("touchmove", moverModal, { passive: false });
-      document.addEventListener("mouseup", pararArraste);
-      document.addEventListener("touchend", pararArraste);
-    };
-  
-    const moverModal = (e) => {
-      if (!isDragging) return;
-  
-      // Determina se é um evento de toque ou clique
-      const evento = e.type.startsWith("touch") ? e.touches[0] : e;
-  
-      const currentX = evento.clientX;
-      const currentY = evento.clientY;
-  
-      const deltaX = currentX - startX;
-      const deltaY = currentY - startY;
-  
-      modal.style.left = `${initialX + deltaX}px`;
-      modal.style.top = `${initialY + deltaY}px`;
-      modal.style.position = "absolute";
-  
-      // Impede a rolagem em dispositivos móveis enquanto arrasta
-      if (e.type.startsWith("touch")) e.preventDefault();
-    };
-  
-    const pararArraste = () => {
-      isDragging = false;
-  
-      // Remove os listeners de movimento e fim do arraste
-      document.removeEventListener("mousemove", moverModal);
-      document.removeEventListener("touchmove", moverModal);
-      document.removeEventListener("mouseup", pararArraste);
-      document.removeEventListener("touchend", pararArraste);
-    };
-  
-    // Adiciona os listeners para o início do arraste
-    modalHeader.addEventListener("mousedown", iniciarArraste);
-    modalHeader.addEventListener("touchstart", iniciarArraste, { passive: false });
-  }
-  
-  // Inicializa a funcionalidade ao carregar a página
-  window.onload = function () {
-    carregarRifa(); // Carrega os dados da rifa
-    tornarModalArrastavel(); // Torna a modal arrastável
+  const modalHeader = document.getElementById("modalHeader");
+  const modal = document.getElementById("modalSelecao");
+
+  let isDragging = false;
+  let startX, startY, initialX, initialY;
+
+  const iniciarArraste = (e) => {
+    // Impede comportamentos padrão como seleção de texto ou rolagem
+    e.preventDefault();
+
+    isDragging = true;
+
+    // Determina se é um evento de toque ou clique
+    const evento = e.type.startsWith("touch") ? e.touches[0] : e;
+
+    startX = evento.clientX;
+    startY = evento.clientY;
+
+    // Calcula a posição inicial considerando a posição real atual da modal
+    const computedStyle = window.getComputedStyle(modal);
+    initialX = parseFloat(computedStyle.left) || 0;
+    initialY = parseFloat(computedStyle.top) || 0;
+
+    // Adiciona os listeners para os movimentos e fim do arraste
+    document.addEventListener("mousemove", moverModal);
+    document.addEventListener("touchmove", moverModal, { passive: false });
+    document.addEventListener("mouseup", pararArraste);
+    document.addEventListener("touchend", pararArraste);
   };
-  
+
+  const moverModal = (e) => {
+    if (!isDragging) return;
+
+    // Determina se é um evento de toque ou clique
+    const evento = e.type.startsWith("touch") ? e.touches[0] : e;
+
+    const currentX = evento.clientX;
+    const currentY = evento.clientY;
+
+    const deltaX = currentX - startX;
+    const deltaY = currentY - startY;
+
+    // Atualiza a posição da modal
+    modal.style.left = `${initialX + deltaX}px`;
+    modal.style.top = `${initialY + deltaY}px`;
+    modal.style.position = "absolute";
+
+    // Impede a rolagem em dispositivos móveis enquanto arrasta
+    if (e.type.startsWith("touch")) e.preventDefault();
+  };
+
+  const pararArraste = () => {
+    isDragging = false;
+
+    // Remove os listeners de movimento e fim do arraste
+    document.removeEventListener("mousemove", moverModal);
+    document.removeEventListener("touchmove", moverModal);
+    document.removeEventListener("mouseup", pararArraste);
+    document.removeEventListener("touchend", pararArraste);
+  };
+
+  // Adiciona os listeners para o início do arraste
+  modalHeader.addEventListener("mousedown", iniciarArraste);
+  modalHeader.addEventListener("touchstart", iniciarArraste, {
+    passive: false,
+  });
+}
+
+// Inicializa a funcionalidade ao carregar a página
+window.onload = function () {
+  carregarRifa(); // Carrega os dados da rifa
+  tornarModalArrastavel(); // Torna a modal arrastável
+};

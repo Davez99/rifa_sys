@@ -64,3 +64,25 @@ body {
   z-index: 1050; /* Para garantir que esteja acima de outros elementos */
 }
 
+#modalSelecao .modal-dialog {
+  padding: 0; /* Remove qualquer padding interno */
+  margin: 0; /* Remove margens externas */
+}
+
+#modalSelecao .modal-content {
+  border: none; /* Remove bordas adicionais, se necessário */
+  box-shadow: none; /* Remove sombra, se existir */
+}
+#modalSelecao .modal-dialog-centered {
+  margin: 0; /* Remove margens automáticas */
+}
+
+/* Sobrescreve os estilos problemáticos */
+.modal {
+  margin: 0 !important; /* Remove a margem */
+  box-shadow: none !important; /* Remove a sombra */
+  --bs-modal-margin: 0 !important; /* Remove margem padrão */
+  --bs-modal-box-shadow: none !important; /* Remove sombra padrão */
+  padding: 0; /* Remove padding extra, se necessário */
+  position: relative; /* Permite que herde do dialog */
+}
