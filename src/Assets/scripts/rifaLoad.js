@@ -1,9 +1,10 @@
-let nomeRifa = "Rifa da Bicicleta";
 let numeros = [];
 let selecionados = []; // Armazena os números selecionados
+let valorSomado = 0;
+let valorRifa = 0;
 
 async function carregarRifa() {
-  const idRifa = 1; // ID da rifa
+  const idRifa = 2; // ID da rifa
   const url = `https://script.google.com/macros/s/AKfycbzPjWTtweDQgRvwkzcy18v5afuq845-87SkgOJbRrxj_J-ZE9HNejZUUkzwP_v3zdH_IA/exec?action=viewRifa&idRifa=${idRifa}`;
 
   try {
@@ -31,6 +32,8 @@ function renderizarRifa(data) {
     "whatsapp"
   ).innerHTML = `<a href="https://wa.me/${data.telefone}" target="_blank">${data.telefone}</a>`;
   document.getElementById("valor").textContent = data.valor.toFixed(2);
+
+  valorRifa = data.valor.toFixed(2);
 
   const container = document.getElementById("numerosContainer");
   container.innerHTML = "";
@@ -64,27 +67,43 @@ function renderizarRifa(data) {
 }
 
 function toggleNumero(numero, botao) {
+  const valorPorNumero = parseFloat(valorRifa);
+
   if (selecionados.includes(numero)) {
     // Deselecionar número
     botao.classList.remove("btn-warning");
     botao.classList.add("btn-success");
     selecionados = selecionados.filter((n) => n !== numero);
+    valorSomado -= valorPorNumero;
   } else {
     // Selecionar número
     botao.classList.remove("btn-success");
     botao.classList.add("btn-warning");
     selecionados.push(numero);
+    valorSomado += valorPorNumero;
   }
 
-  // Atualiza os números na modal, sem fechá-la
+  // Atualiza os números e o total na página
   atualizarModal();
+  atualizarTotal();
 }
+
+function atualizarTotal() {
+  // Atualiza o valor total abaixo dos números
+  const totalSelecionado = document.getElementById("totalSelecionado");
+  totalSelecionado.textContent = valorSomado.toFixed(2);
+}
+
 
 function atualizarModal() {
   const numerosSelecionadosDiv = document.getElementById("numerosSelecionados");
+  const valoresDosNumeros = document.getElementById("valor");
 
   // Atualiza os números selecionados na modal
   numerosSelecionadosDiv.textContent = selecionados.join(", ");
+
+  // Atualiza os valores da modal
+  valoresDosNumeros.textContent = valor;
 
   // Garante que a modal permaneça visível enquanto há números selecionados
   if (selecionados.length > 0) {
@@ -97,7 +116,6 @@ function abrirModal() {
   const modal = document.getElementById("modalSelecao");
   modal.style.display = "block";
 }
-
 function fecharModal() {
   const modal = document.getElementById("modalSelecao");
   modal.style.display = "none";
@@ -114,8 +132,11 @@ function fecharModal() {
   });
 
   selecionados = [];
+  valor = 0; // Reseta o valor total
   atualizarModal();
+  atualizarTotal();
 }
+
 async function confirmarReserva() {
   if (selecionados.length === 0) {
     alert("Nenhum número selecionado!");
@@ -147,6 +168,13 @@ async function confirmarReserva() {
       body: JSON.stringify(payload),
     });
 
+    alert("Reserva enviada com sucesso!");
+
+    const phone = document.querySelector("#whatsapp a").getAttribute("href").replace("https://wa.me/", "");
+    const message = `Nome: ${nomeComprador}\nNúmeros: ${selecionados.join(", ")}\nValor Total: R$ ${valorSomado.toFixed(2)}`;
+    const wame = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+    window.open(wame, "_blank");
     alert("Reserva enviada com sucesso!");
     carregarRifa();
     fecharModal();
