@@ -86,3 +86,6 @@ body {
   padding: 0; /* Remove padding extra, se necessário */
   position: relative; /* Permite que herde do dialog */
 }
+.bg-blur {
+  backdrop-filter: blur(100px);
+}

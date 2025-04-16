@@ -14,13 +14,16 @@ async function carregarRifa() {
     }
 
     const data = await response.json();
-    console.log("Dados da rifa:", data);
 
     // Renderiza os dados da rifa na página
     renderizarRifa(data);
   } catch (error) {
     console.error("Erro ao carregar a rifa:", error);
-    alert("Não foi possível carregar os dados da rifa.");
+    Swal.fire({
+      icon: "error",
+      title: "Não foi possível carregar os dados da rifa.",
+    });
+
   }
 }
 
@@ -30,7 +33,7 @@ function renderizarRifa(data) {
   document.getElementById("organizador").textContent = data.nomeOrganizador;
   document.getElementById(
     "whatsapp"
-  ).innerHTML = `<a href="https://wa.me/${data.telefone}" target="_blank">${data.telefone}</a>`;
+  ).innerHTML = `<a href="https://wa.me/${data.telefone}" class="text-white" target="_blank">${data.telefone}</a>`;
   document.getElementById("valor").textContent = data.valor.toFixed(2);
 
   valorRifa = data.valor.toFixed(2);
@@ -139,13 +142,20 @@ function fecharModal() {
 
 async function confirmarReserva() {
   if (selecionados.length === 0) {
-    alert("Nenhum número selecionado!");
+    Swal.fire({
+      icon: "error",
+      title: "Nenhum número selecionado!",
+    });
+
     return;
   }
 
   const nomeComprador = document.getElementById("comprador").value.trim();
   if (!nomeComprador) {
-    alert("Por favor, insira seu nome completo!");
+    Swal.fire({
+      icon: "error",
+      title: "Por favor, insira seu nome completo!",
+    });
     return;
   }
 
@@ -168,19 +178,29 @@ async function confirmarReserva() {
       body: JSON.stringify(payload),
     });
 
-    alert("Reserva enviada com sucesso!");
-
     const phone = document.querySelector("#whatsapp a").getAttribute("href").replace("https://wa.me/", "");
     const message = `Nome: ${nomeComprador}\nNúmeros: ${selecionados.join(", ")}\nValor Total: R$ ${valorSomado.toFixed(2)}`;
     const wame = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
-    window.open(wame, "_blank");
-    alert("Reserva enviada com sucesso!");
+    
+    Swal.fire({
+      title: "Reserva enviada com sucesso!",
+      text: "Você será redirecionado para o WhatsApp ",
+      icon: "success"
+    }).then((result) => {
+      if(result.isConfirmed){
+        window.open(wame, "_blank");
+      }
+    });
+
     carregarRifa();
     fecharModal();
   } catch (error) {
     console.error("Erro ao reservar números:", error);
-    alert("Erro ao tentar reservar os números.");
+    Swal.fire({
+      icon: "error",
+      title: "Erro ao tentar reservar os números.",
+    });
   }
 }
 
