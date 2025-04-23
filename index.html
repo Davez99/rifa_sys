@@ -8,15 +8,17 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="src/Assets/css/rifaLoad.css" rel="stylesheet" />
     <style></style>
   </head>
   <body class="container py-4">
     <div class="text-dark p-3 p-md-5 rounded bg-blur">
       <h2 id="nomeRifa">Nome da Rifa</h2>
-      <p><strong>Organizador:</strong> <span id="organizador"></span></p>
+      <p><strong>Organizador:</strong> <span id="organizador" class="text-white"></span></p>
       <p><strong>WhatsApp:</strong> <span id="whatsapp"></span></p>
-      <p><strong>Valor por número:</strong> R$ <span id="valor"></span></p>
+      <p><strong>Valor por número:</strong> R$ <span id="valor" class="text-white"></span></p>
+      <p><strong>Premiação: </strong><span id="premiacao" class="text-white" ></span></p>
     </div>
 
     <!-- modais com os números que foram carregados -->
@@ -73,6 +75,28 @@
         </div>
       </div>
     </div>
+
+    <footer>
+      <div class="container bg-white rounded">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+          <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+              <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+            <span class="text-muted">Desenvolvido por 
+              <a class="text-reset fw-bold" href="https://github.com/Davez99">
+                DAVEZ
+             </a>
+            </span>
+          </div>
+      
+          <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="text-muted" href="https://github.com/Davez99"><i class="fa fa-github" width="24" height="24"></i></a></li>
+            <li class="ms-3"><a class="text-muted" href="https://www.instagram.com/terres_davez/""><i class="fa fa-instagram" width="24" height="24"></i></a></li>
+          </ul>
+        </footer>
+      </div>
+    </footer>
 
     <script src="src/Assets/scripts/rifaLoad.js"></script>
     <!-- Bootstrap JS -->
