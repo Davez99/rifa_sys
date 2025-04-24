@@ -137,7 +137,7 @@ function fecharModal() {
   });
 
   selecionados = [];
-  valor = 0; // Reseta o valor total
+  valorSomado = 0; // Reseta o valor total
   atualizarModal();
   atualizarTotal();
 }
