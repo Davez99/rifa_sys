@@ -96,7 +96,7 @@ function toggleNumero(numero, botao) {
 function atualizarTotal() {
   // Atualiza o valor total abaixo dos números
   const totalSelecionado = document.getElementById("totalSelecionado");
-  totalSelecionado.textContent = valorSomado.toFixed(2);
+  totalSelecionado.textContent = valorSomado;
 }
 
 
@@ -122,6 +122,7 @@ function abrirModal() {
   modal.style.display = "block";
 }
 function fecharModal() {
+  debugger
   const modal = document.getElementById("modalSelecao");
   modal.style.display = "none";
 
