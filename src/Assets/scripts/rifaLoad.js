@@ -123,7 +123,7 @@ function abrirModal() {
   modal.style.display = "block";
 }
 function fecharModal() {
-  debugger
+  
   const modal = document.getElementById("modalSelecao");
   modal.style.display = "none";
 
