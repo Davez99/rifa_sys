@@ -35,10 +35,10 @@ function renderizarRifa(data) {
   document.getElementById(
     "whatsapp"
   ).innerHTML = `<a href="https://wa.me/${data.telefone}" class="text-white" target="_blank">${data.telefone}</a>`;
-  document.getElementById("valor").textContent = " R$ " + data.valor.toFixed(2);
+  valorRifa = data.valor.toFixed(2);
+  document.getElementById("valor").textContent = " R$ " + valorRifa;
   document.getElementById("premiacao").textContent = data.premiacao;
 
-  valorRifa = data.valor.toFixed(2);
 
   const container = document.getElementById("numerosContainer");
   container.innerHTML = "";
