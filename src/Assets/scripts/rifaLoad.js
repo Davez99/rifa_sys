@@ -35,8 +35,7 @@ function renderizarRifa(data) {
   document.getElementById(
     "whatsapp"
   ).innerHTML = `<a href="https://wa.me/${data.telefone}" class="text-white" target="_blank">${data.telefone}</a>`;
-  let valor = " R$ " + data.valor.toFixed(2);
-  document.getElementById("valor").innerHTML = valor;
+  document.getElementById("valor").textContent = data.valor.toFixed(2);
   document.getElementById("premiacao").textContent = data.premiacao;
 
   valorRifa = data.valor.toFixed(2);
@@ -103,7 +102,7 @@ function atualizarTotal() {
 
 function atualizarModal() {
   const numerosSelecionadosDiv = document.getElementById("numerosSelecionados");
-  const valoresDosNumeros = document.getElementById("valor").val();
+  const valoresDosNumeros = document.getElementById("valor");
 
   // Atualiza os números selecionados na modal
   numerosSelecionadosDiv.textContent = selecionados.join(", ");
