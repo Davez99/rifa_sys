@@ -108,7 +108,7 @@ function atualizarModal() {
   numerosSelecionadosDiv.textContent = selecionados.join(", ");
 
   // Atualiza os valores da modal
-  valoresDosNumeros.textContent = valor;
+  valoresDosNumeros.textContent = valorRifa;
 
   // Garante que a modal permaneça visível enquanto há números selecionados
   if (selecionados.length > 0) {
