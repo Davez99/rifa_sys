@@ -14,7 +14,7 @@ async function carregarRifa() {
     }
 
     const data = await response.json();
-    console.log("Dados da rifa:", data);
+  
 
     // Renderiza os dados da rifa na página
     renderizarRifa(data);
@@ -35,7 +35,7 @@ function renderizarRifa(data) {
   document.getElementById(
     "whatsapp"
   ).innerHTML = `<a href="https://wa.me/${data.telefone}" class="text-white" target="_blank">${data.telefone}</a>`;
-  document.getElementById("valor").textContent = data.valor.toFixed(2);
+  document.getElementById("valor").textContent = ` R$ ${parseFloat(data.valor).toFixed(2)}`;
   document.getElementById("premiacao").textContent = data.premiacao;
 
   valorRifa = data.valor.toFixed(2);
