@@ -102,13 +102,13 @@ function atualizarTotal() {
 
 function atualizarModal() {
   const numerosSelecionadosDiv = document.getElementById("numerosSelecionados");
-  const valoresDosNumeros = document.getElementById("valor");
+  //const valoresDosNumeros = document.getElementById("valor");
 
   // Atualiza os números selecionados na modal
   numerosSelecionadosDiv.textContent = selecionados.join(", ");
 
   // Atualiza os valores da modal
-  valoresDosNumeros.textContent = valorRifa;
+  //valoresDosNumeros.textContent = valorRifa;
 
   // Garante que a modal permaneça visível enquanto há números selecionados
   if (selecionados.length > 0) {
