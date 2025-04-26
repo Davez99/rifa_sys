@@ -38,7 +38,7 @@ function renderizarRifa(data) {
   document.getElementById("valor").textContent = ` R$ ${parseFloat(data.valor).toFixed(2)}`;
   document.getElementById("premiacao").textContent = data.premiacao;
 
-  valorRifa = ` R$ ${parseFloat(data.valor).toFixed(2)}`;
+  valorRifa =  parseFloat(data.valor).toFixed(2);
 
   const container = document.getElementById("numerosContainer");
   container.innerHTML = "";
