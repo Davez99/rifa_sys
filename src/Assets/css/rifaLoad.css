@@ -50,6 +50,25 @@ body {
   color: white;
 }
 
+@media (max-width: 768px) {
+  #modalSelecao {
+    width: 100%; /* Ajusta para caber na tela */
+    height: auto; /* Altura ajustável */
+    max-height: 80%; /* Limita a altura */
+    border-radius: 0; /* Remove bordas arredondadas */
+  }
+
+  #modalHeader {
+    font-size: 14px; /* Texto menor para o cabeçalho */
+    padding: 5px;
+  }
+
+  #modalHeader button {
+    font-size: 16px; /* Botão "X" menor */
+  }
+}
+
+
 
 #modalSelecao {
   max-width: 90vw;
